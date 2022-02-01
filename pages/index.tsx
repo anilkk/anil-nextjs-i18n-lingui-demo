@@ -1,7 +1,25 @@
-import type { NextPage } from 'next'
+import type { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import { loadTranslation } from '../utils'
+import { Switcher } from '../components/Switcher'
+import { Trans } from '@lingui/macro'
+
+// src/pages/index.tsx
+
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  const translation = await loadTranslation(
+    ctx.locale!,
+    process.env.NODE_ENV === 'production'
+  )
+
+  return {
+    props: {
+      translation
+    }
+  }
+}
 
 const Home: NextPage = () => {
   return (
@@ -13,8 +31,11 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
+        <Switcher />
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          <Trans>
+            Welcome to <a href="https://nextjs.org">Next.js!</a>
+          </Trans>
         </h1>
 
         <p className={styles.description}>
